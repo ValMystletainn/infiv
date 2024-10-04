@@ -1,0 +1,15 @@
+[project]
+name = "infiv"
+version = "0.0.1"
+description = "An example package"
+dependencies = [
+    "requests>=2.26.0,<2.32.3",
+    "beautifulsoup4==4.12.3",
+    "markdownify",
+    "google-generativeai",
+]
+
+[project.optional-dependencies]
+rss = ["feedparser"]
+crawl4ai = ["crawl4ai"]
+dev = ["feedparser", "crawl4ai", "pprint"]
