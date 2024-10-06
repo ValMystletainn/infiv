@@ -11,6 +11,7 @@ permissions:
   contents: read
   issues: write  # allow writing to issue
   pages: write
+  id-token: write
 
 jobs:
   push:
@@ -86,6 +87,7 @@ jobs:
     - uses: actions/upload-pages-artifact@v1
       with:
         path: ./_build/html
+    - uses: actions/deploy-pages@v2
     
     - name: Upload markdown to issue
       env:
