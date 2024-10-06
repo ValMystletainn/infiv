@@ -48,20 +48,18 @@ jobs:
     #     path: ./_build/html
     
     - name: Upload markdown to discussion
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          DISCUSSION_TITLE="Daily Report $(date '+%Y-%m-%d %H:%M:%S')"
-          DISCUSSION_BODY=$(cat output.md)
-          
-          CATEGORY_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/discussions/categories \
-            | jq -r '.[] | select(.name=="Daily report") | .id')
-                 
-          curl -s -X POST \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/discussions \
-            -d "{\"title\": \"$DISCUSSION_TITLE\", \"body\": \"$DISCUSSION_BODY\", \"category_id\": \"$CATEGORY_ID\"}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        DISCUSSION_TITLE="Daily Report $(date '+%Y-%m-%d %H:%M:%S')"
+        DISCUSSION_BODY=$(cat output.md)
+        CATEGORY_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/discussions/categories \
+          | jq -r '.[] | select(.name=="Daily report") | .id')   
+        curl -s -X POST \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/discussions \
+          -d "{\"title\": \"$DISCUSSION_TITLE\", \"body\": \"$DISCUSSION_BODY\", \"category_id\": \"$CATEGORY_ID\"}"
 
