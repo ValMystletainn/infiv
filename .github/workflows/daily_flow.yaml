@@ -3,7 +3,10 @@ on:
   schedule:
     - cron:  '30 3 * * *'    # 3:30 @ UTC
   workflow_dispatch:
-
+    inputs:
+      EXPIRED_DAYTIME:
+        description: 'Optional expired datetime(in UTC), if not set it would be yesterday'
+        required: false
 permissions:
   contents: read
   issues: write  # allow writing to issue
@@ -13,9 +16,38 @@ jobs:
   push:
     runs-on: ubuntu-latest
     env:
-      EXPIRED_DAYTIME: "2024/10/04 23:59"
       ZHIHU_COOKIE: ${{ secrets.ZHIHU_COOKIE }}
     steps:
+    - name: Set EXPIRED_DAYTIME for workflow_dispatch
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        if [ -z "${{ github.event.inputs.EXPIRED_DAYTIME }}" ]; then
+          EXPIRED_DAYTIME=$(date -d 'yesterday' '+%Y/%m/%d %H:%M')
+        else
+          EXPIRED_DAYTIME="${{ github.event.inputs.EXPIRED_DAYTIME }}"
+        fi
+        echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME"
+        echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME" >> $GITHUB_ENV
+
+    - name: Get last successful run and set EXPIRED_DAYTIME for schedule
+      if: ${{ github.event_name == 'schedule' }}
+      run: |
+        # Get the most recent successful scheduled workflow run using GitHub API
+        runs=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}/runs?event=schedule&status=success&per_page=1")
+
+        # Extract the last successful run time
+        last_run_time=$(echo "$runs" | jq -r '.workflow_runs[0].updated_at')
+
+        if [ -z "$last_run_time" ]; then
+          # If no successful run is found, set EXPIRED_DAYTIME to yesterday's date and current time
+          EXPIRED_DAYTIME=$(date -d 'yesterday' '+%Y/%m/%d %H:%M')
+        else
+          # Format the last successful run time to "YYYY/MM/DD HH:MM"
+          EXPIRED_DAYTIME=$(date -d "$last_run_time" '+%Y/%m/%d %H:%M')          
+        fi
+        echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME"
+        echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME" >> $GITHUB_ENV
     - uses: actions/checkout@v4
     - name: checkout rsshub modified
       uses: actions/checkout@v4
@@ -40,7 +72,9 @@ jobs:
         pip install -e .[rss]
         # npm install -g mystmd
     - name: fetch content and build
-      run:  python -m infiv build
+      env:
+        EXPIRED_DAYTIME: ${{ env.EXPIRED_DAYTIME }}
+      run: python -m infiv build
     # - name: to myst pages
     #   run:  myst build --html
     - uses: actions/upload-artifact@v4
