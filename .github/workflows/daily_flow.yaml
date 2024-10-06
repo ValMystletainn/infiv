@@ -76,7 +76,7 @@ jobs:
     - name: fetch content and build
       env:
         EXPIRED_DAYTIME: ${{ env.EXPIRED_DAYTIME }}
-      run: python -m infiv build
+      run: python -m infiv build --use_embed
     - name: to myst pages
       run:  myst build --html
     - uses: actions/upload-artifact@v4
