@@ -4,6 +4,11 @@ on:
     - cron:  '30 3 * * *'    # 3:30 GTM
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write  # allow writing to issue
+  pages: write
+
 jobs:
   push:
     runs-on: ubuntu-latest
