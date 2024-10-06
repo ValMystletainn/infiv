@@ -1,5 +1,10 @@
 import argparse
+import logging
 
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# logging.getLogger("requests").setLevel(logging.WARNING)
+# logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 def parse_args():
     parser = argparse.ArgumentParser(description="infiv")
