@@ -2,16 +2,17 @@ from typing import TYPE_CHECKING, List
 
 import feedparser
 import requests
+from datetime import datetime
 
 from infiv.utils import strcut_time_to_datetime, html_to_info_item_markdown
 
 if TYPE_CHECKING:
-    from infiv.type import InfoItem, RSSPageDict
+    from infiv.types import InfoItem, RSSPageDict
 
-def get_info(url: str) -> List["InfoItem"]:
-    resp = requests.get(url, timeout=60)
+def get_info(url: str, timeout: float = 60.) -> List["InfoItem"]:
+    resp = requests.get(url, timeout=timeout)
     if resp.status_code != 200:
-        raise RuntimeError("Failed to fetch rsshub content")
+        raise RuntimeError(f"Failed to fetch rsshub cool papers arxiv content; {resp.status_code}, {resp.content=}")
     content = feedparser.parse(resp.content)  # type: RSSPageDict
     
     return [
@@ -22,7 +23,7 @@ def get_info(url: str) -> List["InfoItem"]:
                 {"src": entry["link"]},
                 {"root src": content["feed"]["link"]},
             ],
-            "pub_datetime": strcut_time_to_datetime(entry["published_parsed"]),
+            "pub_datetime": strcut_time_to_datetime(entry["published_parsed"]) if "published_parsed" in entry else datetime.now(),
             "tags": [],
         }
         for entry in content["entries"]

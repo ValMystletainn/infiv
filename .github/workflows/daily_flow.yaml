@@ -1,0 +1,29 @@
+name: infiv
+on:
+  schedule:
+    - cron:  '0 22 * * *'    # 22:00 GTM
+  workflow_dispatch:
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+    # TODO rss setup
+    - name: install dependencies
+      run: pip install -e .[rss] && npm install -g mystmd
+    - name: fetch content and build
+      run:  python -m infiv build
+    - name: to myst pages
+      run:  mystmd build --html
+    - uses: actions/upload-pages-artifact@v1
+      with:
+        path: output.md
+    # TODO github page setting
+

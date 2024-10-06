@@ -7,6 +7,7 @@ dependencies = [
     "beautifulsoup4==4.12.3",
     "markdownify",
     "google-generativeai",
+    "pyyaml",
 ]
 
 [project.optional-dependencies]

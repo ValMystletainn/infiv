@@ -1,18 +1,41 @@
 import argparse
-def parse_args():
-    parser = argparse.ArgumentParser(description='infiv')
 
-    sub_parsers = parser.add_subparsers()
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="infiv")
+
+    sub_parsers = parser.add_subparsers(dest="command")
     # subcommand - build - used to build the daily report
-    sub_parser = sub_parsers.add_parser("build")
-    
+    sub_parser = sub_parsers.add_parser("build", help="build the markdown daily report")
+    sub_parser.add_argument(
+        "--src_config", type=str, help="the path of the source config file",
+        default="./configs/source.yaml"
+    )
+    sub_parser.add_argument(
+        "--use_embed", action="store_true", help="whether to use embed mode",
+        default=False
+    )
+
     # subcommand - unitrun - used to check the single processing function
-    sub_parser = sub_parsers.add_parser('unitrun')
+    sub_parser = sub_parsers.add_parser(
+        "unitrun", help="run the unit test for a single spider"
+    )
     return parser.parse_args()
 
-def main(args: argparse.Namespace):
-    print("hello world")
 
-if __name__ == '__main__':
+def main(args: argparse.Namespace):
+    if args.command == "unitrun":
+        # TODO test
+        from infiv.spiders.rsshub.cool_paper_arxiv import get_info
+
+        get_info("")
+    elif args.command == "build":
+        from infiv.build import main
+
+        main(args)
+    
+
+
+if __name__ == "__main__":
     args = parse_args()
     main(args)

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from infiv.utils import strcut_time_to_datetime
 
 if TYPE_CHECKING:
-    from infiv.type import InfoItem, RSSPageDict
+    from infiv.types import InfoItem, RSSPageDict
 
 
 def _extract_abstract(rss_summary: str) -> str:
@@ -16,10 +16,10 @@ def _extract_abstract(rss_summary: str) -> str:
     abstract = '\n\n'.join([p.text for p in paragraphs])  # to a single markdown
     return abstract
 
-def get_info(url: str) -> List["InfoItem"]:
-    resp = requests.get(url, timeout=60)
+def get_info(url: str, timeout: float=60.0) -> List["InfoItem"]:
+    resp = requests.get(url, timeout=timeout)
     if resp.status_code != 200:
-        raise RuntimeError("Failed to fetch rsshub cool papers arxiv content")
+        raise RuntimeError(f"Failed to fetch rsshub cool papers arxiv content; {resp.status_code}, {resp.content=}")
     content = feedparser.parse(resp.content)  # type: RSSPageDict
 
     ##
@@ -34,7 +34,7 @@ def get_info(url: str) -> List["InfoItem"]:
         html_link = f"https://arxiv.org/html/{arxiv_number}"
         pdf_link = f"https://arxiv.org/pdf/{arxiv_number}"
         kimi_link = f"https://papers.cool/arxiv/{arxiv_number}"
-        pub_datetime = strcut_time_to_datetime(entry["published_parsed"])
+        pub_datetime = strcut_time_to_datetime(content["feed"]["updated_parsed"])
         tags = []
         info_item = {
             "title": title,

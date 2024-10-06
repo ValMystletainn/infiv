@@ -24,6 +24,12 @@ pip install -e .
 ## pip uninstall infiv
 ```
 
+Then modified the config files and template files in `configs/`
+
+You can use `make test` command to check if the output markdown file is in your need.
+Then set the github action config file in `.github/workflows/` to do the daily work automatically.
+
+
 ## TODO
 
 - [ ] add a function to call the text to image model to make a banner.
@@ -31,3 +37,5 @@ pip install -e .
 - [ ] add the support from crawl4ai.
 - [ ] As a python pypi upload or focus on a script and move most of get information parts to rsshub and rsshub patch
 - [ ] auto email, telegram, wechat, etc.
+- [ ] build a jinja2 based markdwon template and refactor the source config yaml into it
+- [ ] refactor in crawl4ai
