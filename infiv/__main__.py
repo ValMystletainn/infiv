@@ -25,6 +25,10 @@ def parse_args():
     sub_parser = sub_parsers.add_parser(
         "unitrun", help="run the unit test for a single spider"
     )
+    # subcommand - md2json - used to convert the markdown file to json file
+    sub_parser = sub_parsers.add_parser(
+        "md2json", help="convert the markdown file to json file"
+    )
     return parser.parse_args()
 
 
@@ -37,6 +41,9 @@ def main(args: argparse.Namespace):
     elif args.command == "build":
         from infiv.build import main
 
+        main(args)
+    elif args.command == "md2json":
+        from infiv.md_to_json import main
         main(args)
     
 

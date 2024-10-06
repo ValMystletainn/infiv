@@ -1,7 +1,7 @@
 name: infiv
 on:
   schedule:
-    - cron:  '30 3 * * *'    # 3:30 GTM
+    - cron:  '30 3 * * *'    # 3:30 @ UTC
   workflow_dispatch:
 
 permissions:
@@ -56,13 +56,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ISSUE_TITLE="Daily Report $(date '+%Y-%m-%d %H:%M:%S')"
-        ISSUE_TITLE=$(echo "$ISSUE_TITLE" | jq -R .)
-        ISSUE_BODY=$(cat output.md | jq -Rs .)
+        python -m infiv md2json
         # Create a new issue and upload the markdown content
         curl -s -X POST \
           -H "Authorization: token $GITHUB_TOKEN" \
           -H "Accept: application/vnd.github.v3+json" \
           https://api.github.com/repos/${{ github.repository }}/issues \
-          -d '{"title":"${ISSUE_TITLE}", "body":"I'\''m having a problem with this upload.", "labels":["report"]}'
-
+          -d @output.json
