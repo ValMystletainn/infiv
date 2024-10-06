@@ -62,12 +62,12 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 22.x
-    # - name: rsshub server setup
-    #   run: | # It should wait for ready but we have to install other dependencies so don't sleep now
-    #     cd RSSHub
-    #     npm install
-    #     npm run build
-    #     npm run start &
+    - name: rsshub server setup
+      run: | # It should wait for ready but we have to install other dependencies so don't sleep now
+        cd RSSHub
+        npm install
+        npm run build
+        npm run start &
     - name: install dependencies
       run: |
         cd ${{ github.workspace }}
