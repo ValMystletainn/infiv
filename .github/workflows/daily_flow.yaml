@@ -23,12 +23,12 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 22.x
-    # - name: rsshub server setup
-    #   run: | # It should wait for ready but we have to install other dependencies so don't sleep now
-    #     cd RSSHub
-    #     npm install
-    #     npm run build
-    #     npm run start &
+    - name: rsshub server setup
+      run: | # It should wait for ready but we have to install other dependencies so don't sleep now
+        cd RSSHub
+        npm install
+        npm run build
+        npm run start &
     - name: install dependencies
       run: cd ${{ github.workspace }} && pip install -e .[rss] && npm install -g mystmd
     - name: fetch content and build
@@ -37,7 +37,8 @@ jobs:
       run:  myst build --html
     - uses: actions/upload-artifact@v4
       with:
-        path: output.md
+        # path: output.md
+        path: ./_build/html
     # TODO github page setting
     # - uses: actions/upload-pages-artifact@v1
     #   with:
