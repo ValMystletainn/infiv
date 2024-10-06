@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       EXPIRED_DAYTIME: "2024/10/04 23:59"
+      ZHIHU_COOKIE: ${{ secrets.ZHIHU_COOKIE }}
     steps:
     - uses: actions/checkout@v4
     - name: checkout rsshub modified
@@ -22,12 +23,12 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 22.x
-    - name: rsshub server setup
-      run: | # It should wait for ready but we have to install other dependencies so don't sleep now
-        cd RSSHub
-        npm install
-        npm run build
-        npm run start &
+    # - name: rsshub server setup
+    #   run: | # It should wait for ready but we have to install other dependencies so don't sleep now
+    #     cd RSSHub
+    #     npm install
+    #     npm run build
+    #     npm run start &
     - name: install dependencies
       run: cd ${{ github.workspace }} && pip install -e .[rss] && npm install -g mystmd
     - name: fetch content and build
