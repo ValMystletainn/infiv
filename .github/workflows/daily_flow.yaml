@@ -11,15 +11,25 @@ jobs:
       EXPIRED_DAYTIME: "2024/10/04 23:59"
     steps:
     - uses: actions/checkout@v4
+    - name: checkout rsshub modified
+      uses: actions/checkout@v4
+      with:
+        repository: ValMystletainn/RSSHub
+        path: ./RSSHub
     - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     - uses: actions/setup-node@v4
       with:
         node-version: 22.x
-    # TODO rss setup
+    - name: rsshub server setup
+      run: | # It should wait for ready but we have to install other dependencies so don't sleep now
+        cd RSSHub
+        npm install
+        npm run build
+        npm run start &
     - name: install dependencies
-      run: pip install -e .[rss] && npm install -g mystmd
+      run: cd ${{ github.workspace }} && pip install -e .[rss] && npm install -g mystmd
     - name: fetch content and build
       run:  python -m infiv build
     - name: to myst pages
