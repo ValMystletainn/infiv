@@ -20,6 +20,7 @@ jobs:
       ZHIHU_COOKIE: ${{ secrets.ZHIHU_COOKIE }}
       BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      BASE_URL: /${{ github.event.repository.name }}
     steps:
     - name: Set EXPIRED_DAYTIME for workflow_dispatch
       if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -83,7 +84,6 @@ jobs:
     # - uses: actions/upload-artifact@v4
     #   with:
     #     path: output.md
-    #     # path: ./_build/html
     - uses: actions/upload-pages-artifact@v1
       with:
         path: ./_build/html
