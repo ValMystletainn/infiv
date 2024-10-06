@@ -33,12 +33,13 @@ if __name__ == "__main__":
     import os
     from urllib.parse import urljoin
 
-    from pprint import pprint
-    for subject in ["cs.AI", "math.NT"]:  # use math.NT to check latex formula extract
-        rsshub_url = os.environ.get("RSSHUB_URL", "https://rsshub.app/")
-        rsshub_url = urljoin(rsshub_url, f"papers/arxiv/{subject}")
-        print(f"visiting {rsshub_url}")
-        items = get_info(rsshub_url)
-        print(f"{subject=}")
-        pprint(items[-1])
-        print()
+    # from pprint import pprint
+    # for subject in ["cs.AI", "math.NT"]:  # use math.NT to check latex formula extract
+    #     rsshub_url = os.environ.get("RSSHUB_URL", "https://rsshub.app/")
+    #     rsshub_url = urljoin(rsshub_url, f"papers/arxiv/{subject}")
+    #     print(f"visiting {rsshub_url}")
+    #     items = get_info(rsshub_url)
+    #     print(f"{subject=}")
+    #     pprint(items[-1])
+    #     print()
+    print(get_info("https://wechat2rss.xlab.app/feed/51e92aad2728acdd1fda7314be32b16639353001.xml"))

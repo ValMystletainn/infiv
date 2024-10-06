@@ -39,3 +39,4 @@ Then set the github action config file in `.github/workflows/` to do the daily w
 - [ ] auto email, telegram, wechat, etc.
 - [ ] build a jinja2 based markdwon template and refactor the source config yaml into it
 - [ ] refactor in crawl4ai
+- [ ] trace the discussion visualization of embedding in mystmd site [mystmd discussion #1567](https://github.com/orgs/jupyter-book/discussions/1567)

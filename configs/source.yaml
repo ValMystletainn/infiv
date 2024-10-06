@@ -1,16 +1,45 @@
+rerank:
+  likes:
+    - "Deep Residual Learning for Image Recognition"
+    - "Generative Adversarial Networks"
+    - "Visual Instruction Tuning"
+    - "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"
+    - "Scaling Laws for Neural Language Models"
+    - "Momentum Contrast for Unsupervised Visual Representation Learning"
+    - "Denoising Diffusion Probabilistic Models"
+    - "Adding Conditional Control to Text-to-Image Diffusion Models"
+  dislikes:
+    - "RobustEMD: Domain Robust Matching for Cross-domain Few-shot Medical Image Segmentation"
+    - "Semantic Segmentation of Unmanned Aerial Vehicle Remote Sensing Images using SegFormer"
+    - "Y-CA-Net: A Convolutional Attention Based Network for Volumetric Medical Image Segmentation"
+    - "LightM-UNet: Mamba Assists in Lightweight UNet for Medical Image Segmentation"
+    - "Denoising diffusion probabilistic models for 3D medical image generation"
+    - "The Segment Anything Model (SAM) for Remote Sensing Applications: From Zero to One Shot"
+    - "OpenAI融资70亿，只剩孤家寡人？众人怒揭奥特曼真面目"
+    - "Pika 1.5重磅升级！万物皆可爆炸，搞笑特效全网病毒式疯传"
+    - "MIT系初创打破Transformer霸权！液体基础模型刷新SOTA，非GPT架构首次显著超越Transformer"
+    - "Ilya预言错了！华人Nature一作给RLHF“判死刑”，全球大模型都不可靠"
+    - "“群体智能”剑指AGI革命！国产架构挑战Transformer霸权，首款非Attention模型更新"
+  # embedding_json: ./configs/score_proj_embedding.json
 
 sources:
     - func: infiv.spiders.zhihu.get_info
       url: "https://www.zhihu.com"
-      subject: "social media"
-    # - func: infiv.spiders.bilibili.get_info
-    #   url: "https://www.bilibili.com"
-    #   subject: "social media"
+      subject: "feed"
+    - func: infiv.spiders.bilibili.get_info
+      url: "https://www.bilibili.com"
+      subject: "feed"
     # - func: infiv.spiders.bioxriv.get_info
     #   url: "https://www.biorxiv.org/collection/bioinformatics"
     #   subject: "paper"
+    - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
+      url: "http://localhost:1200/papers/arxiv/cs.CV?limit=500"
+      subject: "paper"
+    - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
+      url: "http://localhost:1200/papers/arxiv/cs.CL?limit=500"
+      subject: "paper"
     # - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
-    #   url: "http://localhost:1200/papers/arxiv/cs.AI"
+    #   url: "http://localhost:1200/papers/arxiv/cs.AI?limit=500"
     #   subject: paper
     # - func: infiv.spiders.rsshub.default.get_info
     #   url: "http://localhost:1200/nature/research"
@@ -18,3 +47,10 @@ sources:
     # - func: infiv.spiders.rsshub.default.get_info
     #   url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml"
     #   subject: coding
+    
+    - func: infiv.spiders.rsshub.default.get_info
+      url: "https://wechat2rss.xlab.app/feed/51e92aad2728acdd1fda7314be32b16639353001.xml"  # 机器之心
+      subject: "feed"
+    - func: infiv.spiders.rsshub.default.get_info
+      url: "https://wechat2rss.xlab.app/feed/3be891c2f4e526629ab055a297cc2cd6c1f0a563.xml"  # paper weekly
+      subject: "feed"

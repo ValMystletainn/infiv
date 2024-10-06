@@ -12,6 +12,7 @@ dependencies = [
     "markdownify",
     "google-generativeai",
     "pyyaml",
+    "numpy==1.26.4",
 ]
 
 [project.optional-dependencies]

@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       EXPIRED_DAYTIME:
-        description: 'Optional expired datetime(in UTC), if not set it would be yesterday'
+        description: 'Optional expired datetime(format "YYYY/MM/DD HH:MM" in UTC), if not set it would be yesterday'
         required: false
 permissions:
   contents: read
@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ZHIHU_COOKIE: ${{ secrets.ZHIHU_COOKIE }}
+      BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
+      GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
     steps:
     - name: Set EXPIRED_DAYTIME for workflow_dispatch
       if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -57,9 +59,9 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    # - uses: actions/setup-node@v4
-    #   with:
-    #     node-version: 22.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
     # - name: rsshub server setup
     #   run: | # It should wait for ready but we have to install other dependencies so don't sleep now
     #     cd RSSHub
@@ -70,21 +72,20 @@ jobs:
       run: |
         cd ${{ github.workspace }}
         pip install -e .[rss]
-        # npm install -g mystmd
+        npm install -g mystmd
     - name: fetch content and build
       env:
         EXPIRED_DAYTIME: ${{ env.EXPIRED_DAYTIME }}
       run: python -m infiv build
-    # - name: to myst pages
-    #   run:  myst build --html
+    - name: to myst pages
+      run:  myst build --html
     - uses: actions/upload-artifact@v4
       with:
         path: output.md
         # path: ./_build/html
-    # TODO github page setting
-    # - uses: actions/upload-pages-artifact@v1
-    #   with:
-    #     path: ./_build/html
+    - uses: actions/upload-pages-artifact@v1
+      with:
+        path: ./_build/html
     
     - name: Upload markdown to issue
       env:
