@@ -6,15 +6,15 @@ sources:
     # - func: infiv.spiders.bilibili.get_info
     #   url: "https://www.bilibili.com"
     #   subject: "social media"
-    - func: infiv.spiders.bioxriv.get_info
-      url: "https://www.biorxiv.org/collection/bioinformatics"
-      subject: "paper"
+    # - func: infiv.spiders.bioxriv.get_info
+    #   url: "https://www.biorxiv.org/collection/bioinformatics"
+    #   subject: "paper"
     # - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
     #   url: "http://localhost:1200/papers/arxiv/cs.AI"
     #   subject: paper
-    - func: infiv.spiders.rsshub.default.get_info
-      url: "http://localhost:1200/nature/research"
-      subject: paper
+    # - func: infiv.spiders.rsshub.default.get_info
+    #   url: "http://localhost:1200/nature/research"
+    #   subject: paper
     # - func: infiv.spiders.rsshub.default.get_info
     #   url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml"
     #   subject: coding

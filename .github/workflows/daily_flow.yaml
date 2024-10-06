@@ -1,7 +1,7 @@
 name: infiv
 on:
   schedule:
-    - cron:  '0 22 * * *'    # 22:00 GTM
+    - cron:  '30 3 * * *'    # 3:30 GTM
   workflow_dispatch:
 
 jobs:
@@ -20,27 +20,48 @@ jobs:
     - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 22.x
-    - name: rsshub server setup
-      run: | # It should wait for ready but we have to install other dependencies so don't sleep now
-        cd RSSHub
-        npm install
-        npm run build
-        npm run start &
+    # - uses: actions/setup-node@v4
+    #   with:
+    #     node-version: 22.x
+    # - name: rsshub server setup
+    #   run: | # It should wait for ready but we have to install other dependencies so don't sleep now
+    #     cd RSSHub
+    #     npm install
+    #     npm run build
+    #     npm run start &
     - name: install dependencies
-      run: cd ${{ github.workspace }} && pip install -e .[rss] && npm install -g mystmd
+      run: |
+        cd ${{ github.workspace }}
+        pip install -e .[rss]
+        # npm install -g mystmd
     - name: fetch content and build
       run:  python -m infiv build
     - name: to myst pages
       run:  myst build --html
     - uses: actions/upload-artifact@v4
       with:
-        # path: output.md
-        path: ./_build/html
+        path: output.md
+        # path: ./_build/html
     # TODO github page setting
     # - uses: actions/upload-pages-artifact@v1
     #   with:
     #     path: ./_build/html
+    
+    - name: Upload markdown to discussion
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DISCUSSION_TITLE="Daily Report $(date '+%Y-%m-%d %H:%M:%S')"
+          DISCUSSION_BODY=$(cat output.md)
+          
+          CATEGORY_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/discussions/categories \
+            | jq -r '.[] | select(.name=="Daily report") | .id')
+                 
+          curl -s -X POST \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/discussions \
+            -d "{\"title\": \"$DISCUSSION_TITLE\", \"body\": \"$DISCUSSION_BODY\", \"category_id\": \"$CATEGORY_ID\"}"
 
