@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "infiv"
 version = "0.0.1"
@@ -14,3 +18,6 @@ dependencies = [
 rss = ["feedparser"]
 crawl4ai = ["crawl4ai"]
 dev = ["feedparser", "crawl4ai", "pprint"]
+
+[tool.setuptools.packages]
+find = { include = ["infiv"] }
