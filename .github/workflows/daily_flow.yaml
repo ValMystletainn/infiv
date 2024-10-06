@@ -36,8 +36,8 @@ jobs:
         # npm install -g mystmd
     - name: fetch content and build
       run:  python -m infiv build
-    - name: to myst pages
-      run:  myst build --html
+    # - name: to myst pages
+    #   run:  myst build --html
     - uses: actions/upload-artifact@v4
       with:
         path: output.md
