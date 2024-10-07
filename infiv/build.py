@@ -192,7 +192,6 @@ def main(args: "argparse.Namespace"):
     ## if set EXPIRED_DAYTIME, filter out the expired items
     if "EXPIRED_DAYTIME" in os.environ:
         expired_datetime = datetime.strptime(os.environ["EXPIRED_DAYTIME"], r"%Y/%m/%d %H:%M")
-        breakpoint()
         flattened_results = [
             item for item in flattened_results if item["pub_datetime"] > expired_datetime
         ]
