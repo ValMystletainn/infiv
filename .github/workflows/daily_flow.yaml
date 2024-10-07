@@ -43,13 +43,14 @@ jobs:
         # Extract the last successful run time
         last_run_time=$(echo "$runs" | jq -r '.workflow_runs[0].updated_at')
 
-        if [ -z "$last_run_time" ]; then
+        if [ -z "$last_run_time" ] || [ "$last_run_time" = "null" ]; then
           # If no successful run is found, set EXPIRED_DAYTIME to yesterday's date and current time
           EXPIRED_DAYTIME=$(date -d 'yesterday' '+%Y/%m/%d %H:%M')
         else
           # Format the last successful run time to "YYYY/MM/DD HH:MM"
           EXPIRED_DAYTIME=$(date -d "$last_run_time" '+%Y/%m/%d %H:%M')          
         fi
+        echo "last_run_time=$last_run_time"
         echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME"
         echo "EXPIRED_DAYTIME=$EXPIRED_DAYTIME" >> $GITHUB_ENV
     - uses: actions/checkout@v4
