@@ -1,7 +1,7 @@
 name: infiv
 on:
   schedule:
-    - cron:  '15 3 * * *'    # 3:15 @ UTC, should be a bit early to encounter the schedule github action delay, this setting get results in average 3:30 UTC
+    - cron:  '50 4 * * *'    # 4:50 @ UTC, should be a bit early to encounter the schedule github action delay, this setting get results in average 5:05 UTC
   workflow_dispatch:
     inputs:
       EXPIRED_DAYTIME:
