@@ -70,6 +70,9 @@ sources:
     - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
       url: "http://localhost:1200/papers/arxiv/cs.CL?limit=500"
       subject: "paper"
+    - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
+      url: "http://localhost:1200/papers/arxiv/cs.RO?limit=500"
+      subject: "paper RO"
     # - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
     #   url: "http://localhost:1200/papers/arxiv/cs.AI?limit=500"
     #   subject: paper
