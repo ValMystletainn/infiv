@@ -88,7 +88,7 @@ jobs:
     - uses: actions/upload-pages-artifact@v3
       with:
         path: ./_build/html
-    - uses: actions/deploy-pages@v3
+    - uses: actions/deploy-pages@v2
     
     - name: Upload markdown to issue
       env:
