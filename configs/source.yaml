@@ -55,12 +55,12 @@ rerank:
   # embedding_json: ./configs/score_proj_embedding.json
 
 sources:
-    - func: infiv.spiders.zhihu.get_info
-      url: "https://www.zhihu.com"
-      subject: "feed"
-    - func: infiv.spiders.bilibili.get_info
-      url: "https://www.bilibili.com"
-      subject: "feed"
+    # - func: infiv.spiders.zhihu.get_info
+    #   url: "https://www.zhihu.com"
+    #   subject: "feed"
+    # - func: infiv.spiders.bilibili.get_info
+    #   url: "https://www.bilibili.com"
+    #   subject: "feed"
     # - func: infiv.spiders.bioxriv.get_info
     #   url: "https://www.biorxiv.org/collection/bioinformatics"
     #   subject: "paper"
