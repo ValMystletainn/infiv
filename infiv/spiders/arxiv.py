@@ -20,7 +20,7 @@ if expired_datetime is not None:
         expired_datetime = datetime.strptime(expired_datetime, r"%Y/%m/%d %H:%M")
 
 def _convert_entry_to_info_item(entry: List["RSSFeedDict"]) -> "InfoItem":
-    title = entry["title"]
+    title = entry["title"].replace("\n", " ")
     abstract = entry["summary"]
     link = entry["link"]
     arxiv_number = link.split("/")[-1]
