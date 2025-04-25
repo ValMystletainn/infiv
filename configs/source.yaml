@@ -78,7 +78,7 @@ sources:
     
     # spider for arxiv from arxiv api
     # support: expired_date but with time lagging ~1d
-    - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
+    - func: infiv.spiders.arxiv.get_info
       url: cs.CV
       subject: "paper"
 
@@ -92,9 +92,9 @@ sources:
     #   url: "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml"
     #   subject: coding
     
-    - func: infiv.spiders.rsshub.default.get_info
-      url: "https://wechat2rss.xlab.app/feed/51e92aad2728acdd1fda7314be32b16639353001.xml"  # 机器之心
-      subject: "feed"
-    - func: infiv.spiders.rsshub.default.get_info
-      url: "https://wechat2rss.xlab.app/feed/3be891c2f4e526629ab055a297cc2cd6c1f0a563.xml"  # paper weekly
-      subject: "feed"
+    # - func: infiv.spiders.rsshub.default.get_info
+    #   url: "https://wechat2rss.xlab.app/feed/51e92aad2728acdd1fda7314be32b16639353001.xml"  # 机器之心
+    #   subject: "feed"
+    # - func: infiv.spiders.rsshub.default.get_info
+    #   url: "https://wechat2rss.xlab.app/feed/3be891c2f4e526629ab055a297cc2cd6c1f0a563.xml"  # paper weekly
+    #   subject: "feed"
