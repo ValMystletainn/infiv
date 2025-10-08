@@ -89,9 +89,9 @@ sources:
     - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
       url: "http://localhost:1200/papers/arxiv/cs.RO?limit=500"
       subject: paper
-    - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
-      url: "http://localhost:1200/papers/arxiv/cs.AI?limit=500"
-      subject: paper
+    # - func: infiv.spiders.rsshub.cool_paper_arxiv.get_info
+    #   url: "http://localhost:1200/papers/arxiv/cs.AI?limit=500"
+    #   subject: paper
     # - func: infiv.spiders.rsshub.default.get_info
     #   url: "http://localhost:1200/nature/research"
     #   subject: paper
