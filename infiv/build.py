@@ -234,10 +234,6 @@ def main(args: "argparse.Namespace"):
         with ThreadPoolExecutor(max_workers=max_thread) as executor:
             embeddings = list(executor.map(lambda func: func(), get_embedding_funcs))
 
-        embeddings = [
-            e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 2048
-            for e_dict in embeddings
-        ]
         embeddings = np.array(embeddings)
 
         ## get rerank embedding
@@ -282,10 +278,6 @@ def main(args: "argparse.Namespace"):
                 with ThreadPoolExecutor(max_workers=max_thread) as executor:
                     proj_proto_embeddings = list(executor.map(lambda func: func(), get_embedding_funcs))
                 
-                proj_proto_embeddings = [
-                    e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 2048
-                    for e_dict in proj_proto_embeddings
-                ]
                 proj_proto_embeddings = np.array(proj_proto_embeddings)
                 # average_score = sum_pos query .* pos_embed / n_pos - sum_neg query .* neg_embed / n_neg
                 #               = (sum_pos pos_embed / n_pos) .* query - (sum_neg neg_embed / n_neg) .* query
