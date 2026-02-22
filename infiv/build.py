@@ -199,25 +199,32 @@ def main(args: "argparse.Namespace"):
     ## 2. get embedding from google gemini
     if not getattr(args, "use_embed", False):
         embeddings = None
-    elif "GOOGLE_API_KEY" not in os.environ:
-        assert False, "GOOGLE_API_KEY not found in env, can't get llm embedding"
+    elif "OPENAI_API_KEY" not in os.environ:
+        assert False, "OPENAI_API_KEY not found in env, can't get llm embedding"
     else:
-        import google.generativeai as genai
+        from openai import OpenAI
+        client = OpenAI(
+            api_key=os.getenv("OPENAI_API_KEY"),
+            base_url=os.getenv("OPENAI_BASE_URL"),
+        )
 
-        genai.configure(transport="rest")  # TODO: test speed https vs grpc
         get_embedding_funcs = [
             functools.partial(
-                genai.embed_content,
-                model="models/embedding-001",
-                content=item["title"],
-                task_type="clustering",
+                client.embeddings.create,
+                model="text-embedding-v4",
+                dimensions=2048,
+                input=item["title"],
             )
             for item in flattened_results
         ]
         get_embedding_funcs = [
+            lambda: func().model_dump()['data'][0]['embedding']
+            for func in get_embedding_funcs
+        ]
+        get_embedding_funcs = [
             retry_with_timeout_decorator(
                 max_retries=3,
-                base_delay=60 / 1200,  # 1500 RPM at peak
+                base_delay=60 / 1200,  # 1800 RPM at peak
                 factor=2,
                 jitter=True,
             )(func)
@@ -228,7 +235,7 @@ def main(args: "argparse.Namespace"):
             embeddings = list(executor.map(lambda func: func(), get_embedding_funcs))
 
         embeddings = [
-            e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 768
+            e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 2048
             for e_dict in embeddings
         ]
         embeddings = np.array(embeddings)
@@ -251,17 +258,21 @@ def main(args: "argparse.Namespace"):
                 proj_proto_texts = likes + dislikes
                 get_embedding_funcs = [
                     functools.partial(
-                        genai.embed_content,
-                        model="models/embedding-001",
-                        content=text,
-                        task_type="clustering",
+                        client.embeddings.create,
+                        model="text-embedding-v4",
+                        dimensions=2048,
+                        input=text,
                     )
                     for text in proj_proto_texts
                 ]
                 get_embedding_funcs = [
+                    lambda: func().model_dump()['data'][0]['embedding']
+                    for func in get_embedding_funcs
+                ]
+                get_embedding_funcs = [
                     retry_with_timeout_decorator(
                         max_retries=3,
-                        base_delay=60 / 1200,  # 1500 RPM at peak
+                        base_delay=60 / 1200,  # 1800 RPM at peak
                         factor=2,
                         jitter=True,
                     )(func)
@@ -272,7 +283,7 @@ def main(args: "argparse.Namespace"):
                     proj_proto_embeddings = list(executor.map(lambda func: func(), get_embedding_funcs))
                 
                 proj_proto_embeddings = [
-                    e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 768
+                    e_dict["embedding"] if isinstance(e_dict, dict) else [0.0] * 2048
                     for e_dict in proj_proto_embeddings
                 ]
                 proj_proto_embeddings = np.array(proj_proto_embeddings)

@@ -20,6 +20,8 @@ jobs:
       ZHIHU_COOKIE: ${{ secrets.ZHIHU_COOKIE }}
       BILIBILI_COOKIE: ${{ secrets.BILIBILI_COOKIE }}
       GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
       BASE_URL: /${{ github.event.repository.name }}
     steps:
     - name: Set EXPIRED_DAYTIME for workflow_dispatch

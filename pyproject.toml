@@ -10,7 +10,7 @@ dependencies = [
     "requests>=2.26.0,<2.32.3",
     "beautifulsoup4==4.12.3",
     "markdownify",
-    "google-generativeai",
+    "openai==2.21.0",
     "pyyaml",
     "numpy==1.26.4",
 ]
