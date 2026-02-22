@@ -218,7 +218,7 @@ def main(args: "argparse.Namespace"):
             for item in flattened_results
         ]
         get_embedding_funcs = [
-            lambda: func().model_dump()['data'][0]['embedding']
+            (lambda f=func: f().model_dump()['data'][0]['embedding'])
             for func in get_embedding_funcs
         ]
         get_embedding_funcs = [
@@ -262,7 +262,7 @@ def main(args: "argparse.Namespace"):
                     for text in proj_proto_texts
                 ]
                 get_embedding_funcs = [
-                    lambda: func().model_dump()['data'][0]['embedding']
+                    (lambda f=func: f().model_dump()['data'][0]['embedding'])
                     for func in get_embedding_funcs
                 ]
                 get_embedding_funcs = [
@@ -283,8 +283,8 @@ def main(args: "argparse.Namespace"):
                 #               = (sum_pos pos_embed / n_pos) .* query - (sum_neg neg_embed / n_neg) .* query
                 #               = (sum_pos pos_embed / n_pos - sum_neg neg_embed / n_neg) .* query
                 #               =   ----  rerank_proj_embed     ----                      .* query
-                avg_pos_proto_embed = np.mean(proj_proto_embeddings[:n_likes], axis=0) if n_likes > 0 else np.zeros(768)
-                avg_neg_proto_embed = np.mean(proj_proto_embeddings[n_likes:], axis=0) if n_dislikes > 0 else np.zeros(768)
+                avg_pos_proto_embed = np.mean(proj_proto_embeddings[:n_likes], axis=0) if n_likes > 0 else np.zeros(2048)
+                avg_neg_proto_embed = np.mean(proj_proto_embeddings[n_likes:], axis=0) if n_dislikes > 0 else np.zeros(2048)
                 rerank_proj_embed = avg_pos_proto_embed - avg_neg_proto_embed
         else:
             rerank_proj_embed = None        
